@@ -21,7 +21,11 @@ require("lazy").setup({
     branch = "v2.5",
     import = "nvchad.plugins",
   },
-
+{
+  'mrcjkb/rustaceanvim',
+  version = '^6', -- Recommended
+  lazy = false, -- This plugin is already lazy
+},
   { import = "plugins" },
 }, lazy_config)
 
@@ -35,3 +39,5 @@ require "nvchad.autocmds"
 vim.schedule(function()
   require "mappings"
 end)
+
+vim.opt.relativenumber=true
