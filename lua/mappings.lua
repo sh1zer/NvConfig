@@ -8,3 +8,5 @@ map("n", ";", ":", { desc = "CMD enter command mode" })
 map("n", "<leader>ln", ":set invnumber invrelativenumber<CR>")
 -- map("i", "jk", "<ESC>")
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+
+map("n", "<leader>greet", ":lua require\"greeter\".test()<CR>")

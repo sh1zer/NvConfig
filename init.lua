@@ -41,3 +41,4 @@ vim.schedule(function()
 end)
 
 vim.opt.relativenumber=true
+require('inheritance_remover').setup()
