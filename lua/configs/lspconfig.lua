@@ -4,7 +4,7 @@ require("nvchad.configs.lspconfig").defaults()
 local lspconfig = require "lspconfig"
 
 -- EXAMPLE
-local servers = {"pyright", "clangd", "html", "cssls" }
+local servers = {"pylsp", "clangd", "html", "cssls" }
 local nvlsp = require "nvchad.configs.lspconfig"
 
 -- lsps with default config
@@ -22,3 +22,21 @@ end
 --   on_init = nvlsp.on_init,
 --   capabilities = nvlsp.capabilities,
 -- }
+--
+lspconfig.pylsp.setup {
+  on_attach = nvlsp.on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+  settings = {
+    pylsp = {
+      plugins = {
+        pycodestyle = {
+          maxLineLength = 100,
+        },
+        flake8 = {
+          maxLineLength = 100,
+        }
+      }
+    }
+  }
+}

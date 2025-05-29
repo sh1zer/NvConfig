@@ -30,5 +30,15 @@ return {
 
   {
     dir = "~/plugins/inheritance_remover",
-  }
+  },
+
+  {
+    "ThePrimeagen/refactoring.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    lazy = false,
+    opts = {},
+  },
 }
