@@ -22,14 +22,6 @@ return {
   	},
   },
 
-  {
-    dir = "~/plugins/greeter",
-    lazy = false,
-  },
-
-  {
-    dir = "~/plugins/inheritance_remover",
-  },
 
   {
     "ThePrimeagen/refactoring.nvim",
@@ -49,13 +41,6 @@ return {
         {"nvim-telescope/telescope.nvim"},
         -- optional picker via fzf-lua
         {"ibhagwan/fzf-lua"},
-        -- .. or via snacks
-        {
-          "folke/snacks.nvim",
-          opts = {
-            terminal = {},
-          }
-        }
     },
     event = "LspAttach",
     opts = {},
@@ -121,16 +106,16 @@ return {
       "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
       desc = "LSP Definitions / references / ... (Trouble)",
     },
-    {
-      "<leader>xL",
-      "<cmd>Trouble loclist toggle<cr>",
-      desc = "Location List (Trouble)",
-    },
-    {
-      "<leader>xQ",
-      "<cmd>Trouble qflist toggle<cr>",
-      desc = "Quickfix List (Trouble)",
-    },
+    -- {
+    --   "<leader>xL",
+    --   "<cmd>Trouble loclist toggle<cr>",
+    --   desc = "Location List (Trouble)",
+    -- },
+    -- {
+    --   "<leader>xQ",
+    --   "<cmd>Trouble qflist toggle<cr>",
+    --   desc = "Quickfix List (Trouble)",
+    -- },
   },
 },
     {
@@ -162,72 +147,67 @@ return {
 -- },
   {
   "folke/snacks.nvim",
+  priority=1000,
   lazy=false,
   opts = {
-    picker = {},
+    picker = {
+      config = function(opts)
+        local theme = require "themes.shiztheme"
+
+        -- 1. DEFINE ALL HIGHLIGHTS
+        vim.api.nvim_set_hl(0, "SnacksPickerNormal", { bg = theme.base_30.black, fg = theme.base_16.base05 })
+        vim.api.nvim_set_hl(0, "SnacksPickerBorder", { fg = theme.base_30.grey })
+        vim.api.nvim_set_hl(0, "SnacksPickerSelection", { bg = theme.base_30.one_bg2, bold = true })
+        vim.api.nvim_set_hl(0, "SnacksPickerSearch", { bg = theme.base_30.one_bg3, fg = theme.base_30.yellow })
+        vim.api.nvim_set_hl(0, "SnacksInputPrompt", { fg = theme.base_30.blue, bold = true })
+        -- Title Highlights
+        vim.api.nvim_set_hl(0, "SnacksPickerTitle", { fg = theme.base_30.blue, bold = true }) -- Default
+        vim.api.nvim_set_hl(0, "SnacksPickerSmartTitle", { fg = theme.base_30.black, bg = theme.base_30.green })
+        vim.api.nvim_set_hl(0, "SnacksPickerPreviewTitle", { fg = theme.base_30.black, bg = theme.base_30.red })
+
+        -- 2. DETERMINE TITLE HIGHLIGHTS
+        local main_title_hl = "Title:SnacksPickerTitle" -- Default
+        -- Use `opts.multi` to detect the smart picker and apply the special title
+        if opts.multi then
+          main_title_hl = "Title:SnacksPickerSmartTitle"
+        end
+        local preview_title_hl = "Title:SnacksPickerPreviewTitle"
+
+        -- 3. CONSTRUCT WINHL MAPPINGS
+        local base_hl = "Normal:SnacksPickerNormal,FloatBorder:SnacksPickerBorder,CursorLine:SnacksPickerSelection,Search:SnacksPickerSearch"
+        local main_winhl = table.concat({ base_hl, main_title_hl }, ",")
+        local preview_winhl = table.concat({ base_hl, preview_title_hl }, ",")
+
+        -- 4. APPLY HIGHLIGHTS AND KEYMAPS
+        -- Use deep extend to safely merge our settings into the preset's defaults
+        local custom_win_opts = {
+          input = {
+            winhl = main_winhl,
+            keys = {
+              ["<Tab>"] = { "list_down", mode = { "i", "n" } },
+              ["<S-Tab>"] = { "list_up", mode = { "i", "n" } },
+              ["<Esc>"] = { "close", mode = { "n", "i" } },
+            },
+          },
+          preview = {
+            winhl = preview_winhl,
+          },
+        }
+        opts.win = vim.tbl_deep_extend("force", opts.win or {}, custom_win_opts)
+
+        -- 5. SET COOL FEATURES
+        opts.layout = { preset = "default" }
+        opts.matcher = { frecency = true, sort_empty = true }
+        opts.auto_confirm = true
+        opts.icons = { files = { enabled = true }, git = { enabled = true } }
+        opts.prompt = " "
+
+        return opts
+      end,
+    },
     explorer = {},
     notifier = {},
     lazygit = {}
-  },
-  keys = {
-        { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
-    -- Top Pickers & Explorer
-    { "<leader><space>", function() Snacks.picker.smart() end, desc = "Smart Find Files" },
-    -- { "<leader>,", function() Snacks.picker.buffers() end, desc = "Buffers" },
-    --{ "<leader>/", function() Snacks.picker.grep() end, desc = "Grep" },
-    { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
-    { "<leader>n", function() Snacks.picker.notifications() end, desc = "Notification History" },
-    { "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
-    -- find
-    { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
-    { "<leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
-    -- { "<leader>ff", function() Snacks.picker.files() end, desc = "Find Files" },
-    -- { "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find Git Files" },
-    { "<leader>fp", function() Snacks.picker.projects() end, desc = "Projects" },
-    { "<leader>fr", function() Snacks.picker.recent() end, desc = "Recent" },
-    -- git
-    { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches" },
-    { "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log" },
-    -- { "<leader>gL", function() Snacks.picker.git_log_line() end, desc = "Git Log Line" },
-    { "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status" },
-    { "<leader>gS", function() Snacks.picker.git_stash() end, desc = "Git Stash" },
-    { "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git Diff (Hunks)" },
-    { "<leader>gf", function() Snacks.picker.git_log_file() end, desc = "Git Log File" },
-    -- Grep
-    { "<leader>sb", function() Snacks.picker.lines() end, desc = "Buffer Lines" },
-    { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },
-    { "<leader>sg", function() Snacks.picker.grep() end, desc = "Grep" },
-    { "<leader>sw", function() Snacks.picker.grep_word() end, desc = "Visual selection or word", mode = { "n", "x" } },
-    -- search
-    { '<leader>s"', function() Snacks.picker.registers() end, desc = "Registers" },
-    { '<leader>s/', function() Snacks.picker.search_history() end, desc = "Search History" },
-    { "<leader>sa", function() Snacks.picker.autocmds() end, desc = "Autocmds" },
-    { "<leader>sb", function() Snacks.picker.lines() end, desc = "Buffer Lines" },
-    { "<leader>sc", function() Snacks.picker.command_history() end, desc = "Command History" },
-    { "<leader>sC", function() Snacks.picker.commands() end, desc = "Commands" },
-    { "<leader>sd", function() Snacks.picker.diagnostics() end, desc = "Diagnostics" },
-    { "<leader>sD", function() Snacks.picker.diagnostics_buffer() end, desc = "Buffer Diagnostics" },
-    { "<leader>sh", function() Snacks.picker.help() end, desc = "Help Pages" },
-    { "<leader>sH", function() Snacks.picker.highlights() end, desc = "Highlights" },
-    { "<leader>si", function() Snacks.picker.icons() end, desc = "Icons" },
-    { "<leader>sj", function() Snacks.picker.jumps() end, desc = "Jumps" },
-    { "<leader>sk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
-    { "<leader>sl", function() Snacks.picker.loclist() end, desc = "Location List" },
-    { "<leader>sm", function() Snacks.picker.marks() end, desc = "Marks" },
-    { "<leader>sM", function() Snacks.picker.man() end, desc = "Man Pages" },
-    { "<leader>sp", function() Snacks.picker.lazy() end, desc = "Search for Plugin Spec" },
-    { "<leader>sq", function() Snacks.picker.qflist() end, desc = "Quickfix List" },
-    { "<leader>sR", function() Snacks.picker.resume() end, desc = "Resume" },
-    { "<leader>su", function() Snacks.picker.undo() end, desc = "Undo History" },
-    { "<leader>uC", function() Snacks.picker.colorschemes() end, desc = "Colorschemes" },
-    -- LSP
-    { "gd", function() Snacks.picker.lsp_definitions() end, desc = "Goto Definition" },
-    { "gD", function() Snacks.picker.lsp_declarations() end, desc = "Goto Declaration" },
-    { "gr", function() Snacks.picker.lsp_references() end, nowait = true, desc = "References" },
-    { "gI", function() Snacks.picker.lsp_implementations() end, desc = "Goto Implementation" },
-    { "gy", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto T[y]pe Definition" },
-    { "<leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
-    { "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
   },
 }
 }

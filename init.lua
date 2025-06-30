@@ -15,12 +15,12 @@ local lazy_config = require "configs.lazy"
 
 -- load plugins
 require("lazy").setup({
-  {
-    "NvChad/NvChad",
-    lazy = false,
-    branch = "v2.5",
-    import = "nvchad.plugins",
-  },
+   {
+     "NvChad/NvChad",
+     lazy = false,
+     branch = "v2.5",
+     import = "nvchad.plugins",
+   },
 {
   'mrcjkb/rustaceanvim',
   version = '^6', -- Recommended
@@ -34,7 +34,6 @@ dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
 dofile(vim.g.base46_cache .. "cmp")
 
-
 require "options"
 require "nvchad.autocmds"
 
@@ -43,6 +42,7 @@ vim.schedule(function()
 end)
 
 vim.opt.relativenumber=true
-require('inheritance_remover').setup()
+
+
 
 
