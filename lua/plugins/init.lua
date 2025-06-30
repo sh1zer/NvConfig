@@ -155,34 +155,22 @@ return {
         local theme = require "themes.shiztheme"
 
         -- 1. DEFINE ALL HIGHLIGHTS
-        vim.api.nvim_set_hl(0, "SnacksPickerNormal", { bg = theme.base_30.black, fg = theme.base_16.base05 })
+        vim.api.nvim_set_hl(0, "SnacksPickerNormal", { bg = theme.base_30.grey, fg = theme.base_16.base05 })
         vim.api.nvim_set_hl(0, "SnacksPickerBorder", { fg = theme.base_30.grey })
         vim.api.nvim_set_hl(0, "SnacksPickerSelection", { bg = theme.base_30.one_bg2, bold = true })
         vim.api.nvim_set_hl(0, "SnacksPickerSearch", { bg = theme.base_30.one_bg3, fg = theme.base_30.yellow })
         vim.api.nvim_set_hl(0, "SnacksInputPrompt", { fg = theme.base_30.blue, bold = true })
         -- Title Highlights
-        vim.api.nvim_set_hl(0, "SnacksPickerTitle", { fg = theme.base_30.blue, bold = true }) -- Default
-        vim.api.nvim_set_hl(0, "SnacksPickerSmartTitle", { fg = theme.base_30.black, bg = theme.base_30.green })
-        vim.api.nvim_set_hl(0, "SnacksPickerPreviewTitle", { fg = theme.base_30.black, bg = theme.base_30.red })
+        -- vim.api.nvim_set_hl(0, "SnacksPickerTitle", { fg = theme.base_30.blue, bold = true }) -- Default
 
-        -- 2. DETERMINE TITLE HIGHLIGHTS
-        local main_title_hl = "Title:SnacksPickerTitle" -- Default
-        -- Use `opts.multi` to detect the smart picker and apply the special title
-        if opts.multi then
-          main_title_hl = "Title:SnacksPickerSmartTitle"
-        end
-        local preview_title_hl = "Title:SnacksPickerPreviewTitle"
 
         -- 3. CONSTRUCT WINHL MAPPINGS
         local base_hl = "Normal:SnacksPickerNormal,FloatBorder:SnacksPickerBorder,CursorLine:SnacksPickerSelection,Search:SnacksPickerSearch"
-        local main_winhl = table.concat({ base_hl, main_title_hl }, ",")
-        local preview_winhl = table.concat({ base_hl, preview_title_hl }, ",")
 
         -- 4. APPLY HIGHLIGHTS AND KEYMAPS
-        -- Use deep extend to safely merge our settings into the preset's defaults
         local custom_win_opts = {
           input = {
-            winhl = main_winhl,
+            winhl = base_hl,
             keys = {
               ["<Tab>"] = { "list_down", mode = { "i", "n" } },
               ["<S-Tab>"] = { "list_up", mode = { "i", "n" } },
@@ -190,24 +178,41 @@ return {
             },
           },
           preview = {
-            winhl = preview_winhl,
+            winhl = base_hl,
           },
         }
         opts.win = vim.tbl_deep_extend("force", opts.win or {}, custom_win_opts)
 
-        -- 5. SET COOL FEATURES
-        opts.layout = { preset = "default" }
+        opts.layout = {
+          backdrop = false,
+          layout = {
+            box = "horizontal",
+            width = 0.3,
+            height = 0.4,
+            {
+              box = "vertical",
+              border = "solid",
+              title = "{title} {live} {flags}",
+              { win = "input", height = 1, border = "bottom" },
+              { win = "list", border = "none" },
+            },
+          },
+        }
         opts.matcher = { frecency = true, sort_empty = true }
-        opts.auto_confirm = true
-        opts.icons = { files = { enabled = true }, git = { enabled = true } }
-        opts.prompt = " "
+        -- opts.auto_confirm = true
+        -- opts.icons = { files = { enabled = true }, git = { enabled = true } }
+        -- opts.prompt = " "
 
         return opts
       end,
     },
     explorer = {},
     notifier = {},
-    lazygit = {}
+    lazygit = {},
+    quickfile = {},
   },
+  keys = {
+          { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
+    }
 }
 }
