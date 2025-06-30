@@ -1,4 +1,4 @@
 yup
 
 # Credits
-fork of nvchad/starter
+heavily built on top of nvChad/starter
