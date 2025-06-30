@@ -154,37 +154,23 @@ return {
       config = function(opts)
         local theme = require "themes.shiztheme"
 
-        -- 1. DEFINE ALL HIGHLIGHTS
-        vim.api.nvim_set_hl(0, "SnacksPickerNormal", { bg = theme.base_30.grey, fg = theme.base_16.base05 })
-        vim.api.nvim_set_hl(0, "SnacksPickerBorder", { fg = theme.base_30.grey })
-        vim.api.nvim_set_hl(0, "SnacksPickerSelection", { bg = theme.base_30.one_bg2, bold = true })
-        vim.api.nvim_set_hl(0, "SnacksPickerSearch", { bg = theme.base_30.one_bg3, fg = theme.base_30.yellow })
-        vim.api.nvim_set_hl(0, "SnacksInputPrompt", { fg = theme.base_30.blue, bold = true })
-        -- Title Highlights
-        -- vim.api.nvim_set_hl(0, "SnacksPickerTitle", { fg = theme.base_30.blue, bold = true }) -- Default
+        -- vim.api.nvim_set_hl(0, "SnacksPicker", { bg = theme.base_30.grey, fg = theme.base_30.green })
+        vim.api.nvim_set_hl(0, "SnacksPickerListCursorLine", { bg = theme.base_30.grey, fg = theme.base_30.red })
+        vim.api.nvim_set_hl(0, "SnacksPickerDir", { fg = theme.base_30.cyan })
 
-
-        -- 3. CONSTRUCT WINHL MAPPINGS
-        local base_hl = "Normal:SnacksPickerNormal,FloatBorder:SnacksPickerBorder,CursorLine:SnacksPickerSelection,Search:SnacksPickerSearch"
-
-        -- 4. APPLY HIGHLIGHTS AND KEYMAPS
         local custom_win_opts = {
           input = {
-            winhl = base_hl,
             keys = {
               ["<Tab>"] = { "list_down", mode = { "i", "n" } },
               ["<S-Tab>"] = { "list_up", mode = { "i", "n" } },
               ["<Esc>"] = { "close", mode = { "n", "i" } },
             },
           },
-          preview = {
-            winhl = base_hl,
-          },
         }
         opts.win = vim.tbl_deep_extend("force", opts.win or {}, custom_win_opts)
 
         opts.layout = {
-          backdrop = false,
+          backdrop = true,
           layout = {
             box = "horizontal",
             width = 0.3,
@@ -200,15 +186,41 @@ return {
         }
         opts.matcher = { frecency = true, sort_empty = true }
         -- opts.auto_confirm = true
-        -- opts.icons = { files = { enabled = true }, git = { enabled = true } }
-        -- opts.prompt = " "
 
         return opts
       end,
     },
     explorer = {},
     notifier = {},
-    lazygit = {},
+    lazygit = {
+        configure = true,
+        -- extra configuration for lazygit that will be merged with the default
+        -- snacks does NOT have a full yaml parser, so if you need `"test"` to appear with the quotes
+        -- you need to double quote it: `"\"test\""`
+        config = {
+        os = { editPreset = "nvim-remote" },
+        gui = {
+          nerdFontsVersion = "3",
+        },
+      },
+      theme_path = vim.fs.normalize(vim.fn.stdpath("cache") .. "/lazygit-theme.yml"),
+      -- Theme for lazygit
+      theme = {
+        [241]                      = { fg = "Special" },
+        -- activeBorderColor          = { fg = "MatchParen", bold = true },
+        cherryPickedCommitBgColor  = { fg = "Identifier" },
+        cherryPickedCommitFgColor  = { fg = "Function" },
+        defaultFgColor             = { fg = "Normal" },
+        inactiveBorderColor        = { fg = "MatchParen" },
+        optionsTextColor           = { fg = "Function" },
+        -- searchingActiveBorderColor = { fg = "MatchParen", bold = true },
+        selectedLineBgColor        = { bg = "Visual" }, -- set to `default` to have no background colour
+        unstagedChangesColor       = { fg = "DiagnosticError" },
+      },
+      win = {
+        style = "lazygit",
+      },
+    },
     quickfile = {},
   },
   keys = {
