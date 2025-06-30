@@ -32,6 +32,8 @@ require("lazy").setup({
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
+dofile(vim.g.base46_cache .. "cmp")
+
 
 require "options"
 require "nvchad.autocmds"
@@ -42,3 +44,5 @@ end)
 
 vim.opt.relativenumber=true
 require('inheritance_remover').setup()
+
+

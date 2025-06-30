@@ -6,12 +6,12 @@
 local M = {}
 
 M.base46 = {
-	theme = "ayu_dark",
+	theme = "shiztheme",
 
-	-- hl_override = {
-	-- 	Comment = { italic = true },
-	-- 	["@comment"] = { italic = true },
-	-- },
+	hl_override = {
+		Comment = { italic = true },
+		["@comment"] = { italic = true },
+	},
 }
 
  M.nvdash = { load_on_startup = true }
@@ -19,6 +19,33 @@ M.base46 = {
         tabufline = {
             lazyload = false
      }
+}
+
+M.ui = {
+   cmp = {
+     lspkind_text = true,
+     style = "atom_colored", -- default/flat_light/flat_dark/atom/atom_colored
+     format_colors = {
+       lsp = true,
+     },
+    icons_left = true,
+    icons = true,
+   },
+
+  telescope = {
+    style = "bordered",
+  },
+
+  statusline = {
+    theme = "minimal",
+    separator_style = "default",
+    order = {"mode", "file", "git", "%=", "lsp_msg", "%=", "diagnostics", "lsp", "cwd", "cursor"},
+    modules = nil,
+  },
+
+  lsp = { 
+    signature = true
+  },
 }
 
 return M
