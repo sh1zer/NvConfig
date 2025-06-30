@@ -22,5 +22,4 @@ end, { noremap = true, silent = true })
 -- vim.keymap.set("n", "K", ":lua require(\"pretty_hover\").hover()<CR>")
 
 vim.keymap.set("n", "K", function() require("pretty_hover").hover() end )
-vim.keymap.set("n", "<leader>n", function() require("nvim-navbuddy").open() end)
 require('leap').set_default_mappings()
