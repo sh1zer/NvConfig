@@ -179,7 +179,7 @@ return {
       -- Theme for lazygit
       theme = {
         [241]                      = { fg = "Special" },
-        -- activeBorderColor          = { fg = "MatchParen", bold = true },
+        activeBorderColor          = { fg = "Special", bold = true },
         cherryPickedCommitBgColor  = { fg = "Identifier" },
         cherryPickedCommitFgColor  = { fg = "Function" },
         defaultFgColor             = { fg = "Normal" },
