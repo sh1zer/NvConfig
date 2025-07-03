@@ -30,7 +30,7 @@ map("n", "<leader><space>", function() Snacks.picker.smart() end, { desc = "Smar
 -- map("n", "<leader>/", function() Snacks.picker.grep() end, { desc = "Grep" })
 map("n", "<leader>:", function() Snacks.picker.command_history() end, { desc = "Command History" })
 map("n", "<leader>n", function() Snacks.picker.notifications() end, { desc = "Notification History" })
-map("n", "<leader>e", function() Snacks.explorer() end, { desc = "File Explorer" })
+-- map("n", "<leader>e", function() Snacks.picker.explorer() end, { desc = "File Explorer" })
 
 -- Find
 map("n", "<leader>fb", function() Snacks.picker.buffers() end, { desc = "Buffers" })
@@ -84,7 +84,9 @@ map("n", "gr", function() Snacks.picker.lsp_references() end, { nowait = true, d
 map("n", "gI", function() Snacks.picker.lsp_implementations() end, { desc = "Goto Implementation" })
 map("n", "gy", function() Snacks.picker.lsp_type_definitions() end, { desc = "Goto T[y]pe Definition" })
 map("n", "<leader>ss", function() Snacks.picker.lsp_symbols() end, { desc = "LSP Symbols" })
-map("n", "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, { desc = "LSP Workspace Symbols" })
+map("n", "<leader>i", function() Snacks.picker.lsp_workspace_symbols() end, { desc = "LSP Workspace Symbols" })
 
 
 
+map("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "File Explorer" })
+-- map("n", "<leader>e", function() Snacks.picker.explorer() end, { desc = "File Explorer" })

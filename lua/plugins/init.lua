@@ -76,7 +76,6 @@ return {
       },
     }, -- for default options, refer to the configuration section for custom setup.
   cmd = "Trouble",
-
   keys = {
     -- {
     --   "<leader>xx",
@@ -123,6 +122,21 @@ return {
   lazy=false,
   opts = {
     picker = {
+      layout = {
+        backdrop = true,
+        layout = {
+          box = "horizontal",
+          width = 0.3,
+          height = 0.4,
+          {
+            box = "vertical",
+            border = "solid",
+            title = "{title} {live} {flags}",
+            { win = "input", height = 1, border = "bottom" },
+            { win = "list", border = "none" },
+          },
+        },
+      },
       config = function(opts)
         local theme = require "themes.shiztheme"
 
@@ -141,35 +155,19 @@ return {
         }
         opts.win = vim.tbl_deep_extend("force", opts.win or {}, custom_win_opts)
 
-        opts.layout = {
-          backdrop = true,
-          layout = {
-            box = "horizontal",
-            width = 0.3,
-            height = 0.4,
-            {
-              box = "vertical",
-              border = "solid",
-              title = "{title} {live} {flags}",
-              { win = "input", height = 1, border = "bottom" },
-              { win = "list", border = "none" },
-            },
-          },
-        }
         opts.matcher = { frecency = true, sort_empty = true }
         -- opts.auto_confirm = true
 
         return opts
       end,
     },
-    explorer = {},
     notifier = {},
     lazygit = {
-        configure = true,
-        -- extra configuration for lazygit that will be merged with the default
-        -- snacks does NOT have a full yaml parser, so if you need `"test"` to appear with the quotes
-        -- you need to double quote it: `"\"test\""`
-        config = {
+      configure = true,
+      -- extra configuration for lazygit that will be merged with the default
+      -- snacks does NOT have a full yaml parser, so if you need `"test"` to appear with the quotes
+      -- you need to double quote it: `"\"test\""`
+      config = {
         os = { editPreset = "nvim-remote" },
         gui = {
           nerdFontsVersion = "3",
@@ -178,16 +176,16 @@ return {
       theme_path = vim.fs.normalize(vim.fn.stdpath("cache") .. "/lazygit-theme.yml"),
       -- Theme for lazygit
       theme = {
-        [241]                      = { fg = "Special" },
-        activeBorderColor          = { fg = "Special", bold = true },
-        cherryPickedCommitBgColor  = { fg = "Identifier" },
-        cherryPickedCommitFgColor  = { fg = "Function" },
-        defaultFgColor             = { fg = "Normal" },
-        inactiveBorderColor        = { fg = "MatchParen" },
-        optionsTextColor           = { fg = "Function" },
+        [241] = { fg = "Special" },
+        activeBorderColor = { fg = "Special", bold = true },
+        cherryPickedBgColor = { fg = "Identifier" },
+        cherryPickedFgColor = { fg = "Function" },
+        defaultFgColor = { fg = "Normal" },
+        inactiveBorderColor = { fg = "MatchParen" },
+        optionsTextColor = { fg = "Function" },
         -- searchingActiveBorderColor = { fg = "MatchParen", bold = true },
-        selectedLineBgColor        = { bg = "Visual" }, -- set to `default` to have no background colour
-        unstagedChangesColor       = { fg = "DiagnosticError" },
+        selectedLineBgColor = { bg = "Visual" }, -- set to `default` to have no background colour
+        unstagedChangesColor = { fg = "DiagnosticError" },
       },
       win = {
         style = "lazygit",
@@ -196,7 +194,7 @@ return {
     quickfile = {},
   },
   keys = {
-          { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
-    }
+    { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
+  }
 }
 }
