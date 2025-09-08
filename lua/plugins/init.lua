@@ -141,7 +141,7 @@ return {
         local theme = require "themes.shiztheme"
 
         -- vim.api.nvim_set_hl(0, "SnacksPicker", { bg = theme.base_30.grey, fg = theme.base_30.green })
-        vim.api.nvim_set_hl(0, "SnacksPickerListCursorLine", { bg = theme.base_30.grey, fg = theme.base_30.red })
+        vim.api.nvim_set_hl(0, "SnacksPickerListCursorLine", { bg = theme.base_30.grey})
         vim.api.nvim_set_hl(0, "SnacksPickerDir", { fg = theme.base_30.cyan })
 
         local custom_win_opts = {
@@ -198,14 +198,18 @@ return {
   }
 },
   {
-  'stevearc/oil.nvim',
-  ---@module 'oil'
-  ---@type oil.SetupOpts
-  opts = {},
-  -- Optional dependencies
-  dependencies = { { "echasnovski/mini.icons", opts = {} } },
-  -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
-  -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
-  lazy = false,
-}
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
+    -- Optional dependencies
+    dependencies = { { "echasnovski/mini.icons", opts = {} } },
+    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+    -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+    lazy = false,
+  },
+  {
+    dir = '~/key_inspector.nvim',
+    name = 'key_inspector.nvim',
+  },
 }
